@@ -33,19 +33,48 @@ h1 {
 .cell:hover {
     background-color: #c83030;
 }
-#resetButton {
-    display: block;
-    margin: 20px auto;
-    padding: 6px 16px;
-    border-radius: 8px;
-    background-color: #ff6f09;
-    color: rgb(234, 209, 209);
-    font-size: 16px;
-    cursor: pointer;
-}
 #message {
     text-align: center;
     color: white;
-    font-size: 10px;
+    font-size: 30px;
+    font-style: italic;
     margin-top: 20px;
 }
+/* Modal Styles */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(249, 219, 219); 
+    background-color: rgba(205, 169, 169, 0.4); 
+}
+.modal-content {
+    background-color: #3a0d0d;
+    margin: 15% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; 
+    max-width: 300px;
+    text-align: center;
+    border-radius: 10px;
+}
+#playAgainButton {
+    padding: 10px 20px;  /* Adds padding inside the button. */
+    font-size: 16px;  /* Sets font size. */
+    background-color: #4CAF50;  /* Green background. */
+    color: white;  /* White text. */
+    border: none;  /* No border. */
+    border-radius: 5px;  /* Rounded corners. */
+    cursor: pointer;  /* Pointer cursor on hover. */
+    margin-top: 10px;  /* Space above the button. */
+}
+
+#playAgainButton:hover {
+    background-color: #45a049;  /* Darker green on hover. */
+}
+

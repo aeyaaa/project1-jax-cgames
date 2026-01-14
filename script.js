@@ -1,77 +1,78 @@
 const board = document.getElementById('board');
 const cells = document.querySelectorAll('.cell');
-const status = document.getElementById('status');
 const message = document.getElementById('message');
+const modal = document.getElementById('modal');
+const modalMessage = document.getElementById('modalMessage');
+const playAgainButton = document.getElementById('playAgainButton');
 
 let currentPlayer = 'X';
 let gameBoard = Array(9).fill(null);
 let gameActive = true;
 
-function checkWinner() {
-    const winningCombinations = [
-        [0,1,2],
-        [3,4,5],
-        [6,7,8],
-        [0,3,6],
-        [1,4,7],
-        [2,5,8],
-        [0,4,8]
-        [2,4,6]
-    ];
+function getPlayerName(symbol) {
+    return symbol === 'X' ? 'Player 1' : 'Player 2';
+}
 
-    //loops
-    for (let combination of winningCombinations) {
-        // Destructures the pattern into three indices
-        //  (e.g., a=0, b=1, c=2 for the first pattern).
-        const [a, b, c]= combination;
-        //check
+function checkWinner() {
+    const winPatterns = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]
+    ];
+    for (let pattern of winPatterns) {
+        const [a, b, c] = pattern;
         if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
-            return gameBoard[a]; // Return the winner ('X' or 'O')
+            return gameBoard[a];
         }
     }
-    return null; // No winner yet
+    return null;
 }
-//function to check if the board is full
-function isBoardFull() {
-    return gameBoard.every(cell => cell !== null); //returns true if all cells are filled
+
+function isDraw() {
+    return gameBoard.every(cell => cell !== null);
 }
-//function to handle cell click
+
 function handleCellClick(event) {
     const cell = event.target;
-    const cellIndex = parseInt(cell.getAttribute('data-index'));
-
-    //check if the cell is empty and the game is active
-    if (gameBoard[cellIndex] === null && gameActive) {
-        //update the board
-        gameBoard[cellIndex] = currentPlayer;
+    const index = parseInt(cell.getAttribute('data-index'));
+    
+    if (gameBoard[index] === null && gameActive) {
+        gameBoard[index] = currentPlayer;
         cell.textContent = currentPlayer;
-
-        //check for a winner
+        
         const winner = checkWinner();
         if (winner) {
-            status.textContent = `Player ${winner} wins!`;
-            message.textContent = `Congratulations Player ${winner}!`;
+            modalMessage.textContent = `${getPlayerName(winner)} wins!`;
+            modal.style.display = 'block';  // Shows modal
             gameActive = false;
-            return;
-        } else if (isBoardFull()) {
-            status.textContent = `It's a draw!`;
-            message.textContent = `Well played both!`;  
+            console.log('Winner detected, modal shown');  // Debug log
+        } else if (isDraw()) {
+            modalMessage.textContent = "It's a draw!";
+            modal.style.display = 'block';  // Shows modal
             gameActive = false;
+            console.log('Draw detected, modal shown');  // Debug log
         } else {
             currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-            status.textContent = `Player ${currentPlayer}'s turn`;
-            message.textContent = `Player ${currentPlayer}'s turn`;
+            message.textContent = `${getPlayerName(currentPlayer)}'s turn`;
         }
     }
 }
-//
+
+function resetGame() {
+    gameBoard = Array(9).fill(null);
+    gameActive = true;
+    currentPlayer = 'X';
+    cells.forEach(cell => cell.textContent = '');
+    message.textContent = `${getPlayerName(currentPlayer)}'s turn`;
+    modal.style.display = 'none';  // Hides modal
+    console.log('Game reset');  // Debug log
+}
+
 function initGame() {
     cells.forEach(cell => cell.addEventListener('click', handleCellClick));
-    status.textContent = `Player ${currentPlayer}'s turn`;
-    message.textContent = `Player ${currentPlayer}'s turn`; 
+    playAgainButton.addEventListener('click', resetGame);
+    message.textContent = `${getPlayerName(currentPlayer)}'s turn`;
+    console.log('Game initialized');  // Debug log
 }
+
 initGame();
-
-
-
-    
