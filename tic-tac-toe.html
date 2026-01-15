@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe Game</title>  <!-- This sets the title of the webpage that appears in the browser tab. -->
+    <link rel="stylesheet" href="/css/tic-styles.css">  <!-- Links to the external CSS file for styling the page. -->
+</head>
+<body>
+    <div>
+        <h1>Tic-Tac-Toe</h1>  <!-- This is a heading element displaying the game title. -->
+        <div class="board" id="board">  <!-- This div represents the game board. The 'id' allows JavaScript to reference it. -->
+            <!-- Each of these divs is a cell in the 3x3 grid. They are empty initially and will be filled with X or O via JavaScript. -->
+            <div class="cell" data-index="0"></div>  <!-- 'data-index' is a custom attribute to track the cell's position (0-8). -->
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+        <div id="message"></div>  <!-- This div will display turn messages (e.g., "Player 1's turn"). -->
+    </div>
+    
+    <!-- Modal for game end (winner/draw alert) -->
+    <div id="modal" class="modal">  <!-- The modal container, hidden by default via CSS. -->
+        <div class="modal-content">  <!-- The inner content of the modal. -->
+            <p id="modalMessage"></p>  <!-- Placeholder for the winner/draw message. -->
+            <button id="playAgainButton">Play Again</button>  <!-- Button to reset and play again. -->
+        </div>
+    </div>
+    
+    <script src="script.js"></script>  <!-- Links to the external JavaScript file for game logic. Placed at the end of the body for better performance. -->
+</body>
+</html>
