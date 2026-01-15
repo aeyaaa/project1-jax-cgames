@@ -6,7 +6,7 @@ const modalMessage = document.getElementById('modalMessage');
 const playAgainButton = document.getElementById('playAgainButton');
 
 // Game variables.
-let car = { x: 50, y: 150, width: 190, height: 40, speed: 10 };  // Car position, size, and speed. Adjust width/height to match your image.
+let car = { x: 50, y: 150, width: 190, height: 50, speed: 8 };  // Car position, size, and speed. Adjust width/height to match your image.
 let obstacles = [];
 let score = 0;
 let gameActive = true;
@@ -62,7 +62,7 @@ function update() {
 
     obstacles = obstacles.filter(obstacle => obstacle.x > -obstacle.width);
 
-    if (Math.random() < 0.02) {
+    if (Math.random() < 0.04) {
         const type = Math.random() < 0.5 ? 'stone' : 'ramp';
         obstacles.push({
             x: canvas.width,

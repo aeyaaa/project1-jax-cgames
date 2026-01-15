@@ -22,8 +22,8 @@ h1 {
 }
 
 canvas {
-    border: 2px solid #333;  /* Border around the game canvas. */
-    background-color: #bcbcbc;  /* Light blue sky background. */
+    border: 2px solid #000000;  /* Border around the game canvas. */
+    background-color: #000000;  /* Light blue sky background. */
 }
 
 .modal {
