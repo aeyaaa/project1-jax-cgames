@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetris Game</title>
+    <link rel="stylesheet" href="/css/tetris.css">
+</head>
+<body>
+    <div>
+        <h1>Tetris</h1>
+        <p id="score">Score: 0</p>
+        <canvas id="gameCanvas"></canvas>
+        <p>Use ←→ to move, ↑ to rotate, ↓ to drop faster. Clear lines to score!</p>
+    </div>
+    
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <p id="modalMessage">Game Over! Score: 0</p>
+            <button id="playAgainButton">Play Again</button>
+        </div>
+    </div>
+    
+    <script src="/js/tetris.js"></script>
+</body>
+</html>
