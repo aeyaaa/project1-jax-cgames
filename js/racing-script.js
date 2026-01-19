@@ -6,7 +6,7 @@ const modalMessage = document.getElementById('modalMessage');
 const playAgainButton = document.getElementById('playAgainButton');
 
 // Game variables.
-let car = { x: 50, y: 150, width: 190, height: 50, speed: 8 };  // Car position, size, and speed. Adjust width/height to match your image.
+let car = { x: 50, y: 150, width: 150, height: 45, speed: 8 };  // Car position, size, and speed. Adjust width/height to match your image.
 let obstacles = [];
 let score = 0;
 let gameActive = true;
