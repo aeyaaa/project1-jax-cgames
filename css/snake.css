@@ -6,12 +6,12 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f0f0f0;
+    background-color: #ffffff;
 }
 
 h1 {
     text-align: center;
-    color: #333;
+    color: #391919;
 }
 
 #score {
@@ -23,8 +23,8 @@ canvas {
     width: 100vw;
     max-width: 600px;  /* Limits max width for better play on large screens. */
     height: 70vh;
-    border: 2px solid #333;
-    background-color: #000;  /* Black background for classic Snake look. */
+    border: 2px solid #450e0e;
+    background-color: #683535;  /* Black background for classic Snake look. */
     display: block;
 }
 
@@ -41,7 +41,7 @@ canvas {
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background-color: #a91919;
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
@@ -54,7 +54,7 @@ canvas {
 #playAgainButton {
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #4CAF50;
+    background-color: #127b16;
     color: white;
     border: none;
     border-radius: 5px;
