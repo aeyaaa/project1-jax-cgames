@@ -6,21 +6,29 @@ const modalMessage = document.getElementById('modalMessage');
 const playAgainButton = document.getElementById('playAgainButton');
 
 // Game variables.
-const ROWS = 12;
-const COLS = 15;
 const BUBBLE_RADIUS = 15;
+const BUBBLE_DIAMETER = BUBBLE_RADIUS * 2;
+let ROWS, COLS;
 let bubbles = [];
-let shooter = { x: canvas.width / 2, y: canvas.height - 50, angle: 0 };
+let shooter = { x: 0, y: 0, angle: -Math.PI / 2 };
 let currentBubble = null;
 let score = 0;
 let gameActive = true;
 const COLORS = ['red', 'blue', 'green', 'yellow', 'purple', 'orange'];
 
-// Function to resize canvas.
+// Function to resize canvas and calculate grid.
 function resizeCanvas() {
-    canvas.width = COLS * BUBBLE_RADIUS * 2;
-    canvas.height = ROWS * BUBBLE_RADIUS * 2 + 100;  // Extra for shooter.
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    shooter.x = canvas.width / 2;
+    shooter.y = canvas.height - 50;
+    COLS = Math.floor(canvas.width / BUBBLE_DIAMETER);
+    ROWS = Math.floor((canvas.height - 100) / BUBBLE_DIAMETER);
 }
+window.addEventListener('resize', () => {
+    resizeCanvas();
+    createBubbles();
+});
 resizeCanvas();
 
 // Function to create bubbles grid.
@@ -28,25 +36,26 @@ function createBubbles() {
     bubbles = [];
     for (let row = 0; row < ROWS; row++) {
         for (let col = 0; col < COLS; col++) {
-            if (Math.random() < 0.7) {  // 70% chance for bubble.
-                const x = col * BUBBLE_RADIUS * 2 + BUBBLE_RADIUS;
-                const y = row * BUBBLE_RADIUS * 2 + BUBBLE_RADIUS;
+            if (Math.random() < 0.7) {
+                const x = col * BUBBLE_DIAMETER + BUBBLE_RADIUS;
+                const y = row * BUBBLE_DIAMETER + BUBBLE_RADIUS;
                 const color = COLORS[Math.floor(Math.random() * COLORS.length)];
-                bubbles.push({ x, y, color, row, col });
+                bubbles.push({ x, y, color, row, col, flash: false });  // Add flash property.
             }
         }
     }
 }
 
-// Function to draw bubbles.
+// Function to draw bubbles (with flash effect).
 function drawBubbles() {
     bubbles.forEach(bubble => {
         ctx.beginPath();
         ctx.arc(bubble.x, bubble.y, BUBBLE_RADIUS, 0, Math.PI * 2);
-        ctx.fillStyle = bubble.color;
+        ctx.fillStyle = bubble.flash ? 'white' : bubble.color;  // Flash white if hit.
         ctx.fill();
         ctx.strokeStyle = '#000';
         ctx.stroke();
+        if (bubble.flash) bubble.flash = false;  // Reset flash after one frame.
     });
 }
 
@@ -57,7 +66,6 @@ function drawShooter() {
     ctx.fillStyle = 'white';
     ctx.fill();
     ctx.stroke();
-    // Aim line.
     const endX = shooter.x + Math.cos(shooter.angle) * 50;
     const endY = shooter.y + Math.sin(shooter.angle) * 50;
     ctx.beginPath();
@@ -71,11 +79,11 @@ function drawShooter() {
 function shootBubble() {
     if (!currentBubble) {
         const color = COLORS[Math.floor(Math.random() * COLORS.length)];
-        currentBubble = { x: shooter.x, y: shooter.y, vx: Math.cos(shooter.angle) * 5, vy: Math.sin(shooter.angle) * 5, color };
+        currentBubble = { x: shooter.x, y: shooter.y, vx: Math.cos(shooter.angle) * 10, vy: Math.sin(shooter.angle) * 10, color };
     }
 }
 
-// Function to update bubble movement.
+// Function to update bubble movement (bang effect on hit, no bounce back).
 function updateBubble() {
     if (currentBubble) {
         currentBubble.x += currentBubble.vx;
@@ -85,12 +93,14 @@ function updateBubble() {
             const dx = currentBubble.x - bubble.x;
             const dy = currentBubble.y - bubble.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < BUBBLE_RADIUS * 2) {
-                // Snap to grid.
-                const col = Math.round((currentBubble.x - BUBBLE_RADIUS) / (BUBBLE_RADIUS * 2));
-                const row = Math.round((currentBubble.y - BUBBLE_RADIUS) / (BUBBLE_RADIUS * 2));
-                currentBubble.x = col * BUBBLE_RADIUS * 2 + BUBBLE_RADIUS;
-                currentBubble.y = row * BUBBLE_RADIUS * 2 + BUBBLE_RADIUS;
+            if (distance < BUBBLE_DIAMETER) {
+                // Bang effect: Flash the hit bubble white.
+                bubble.flash = true;
+                // No bounce back - just snap the shot bubble immediately.
+                const col = Math.round((currentBubble.x - BUBBLE_RADIUS) / BUBBLE_DIAMETER);
+                const row = Math.round((currentBubble.y - BUBBLE_RADIUS) / BUBBLE_DIAMETER);
+                currentBubble.x = col * BUBBLE_DIAMETER + BUBBLE_RADIUS;
+                currentBubble.y = row * BUBBLE_DIAMETER + BUBBLE_RADIUS;
                 currentBubble.row = row;
                 currentBubble.col = col;
                 bubbles.push(currentBubble);
@@ -114,11 +124,10 @@ function checkMatches(bubble) {
         if (visited.has(b) || b.color !== color) return;
         visited.add(b);
         matches.push(b);
-        // Check neighbors.
         const neighbors = bubbles.filter(nb => {
             const dx = Math.abs(nb.x - b.x);
             const dy = Math.abs(nb.y - b.y);
-            return dx <= BUBBLE_RADIUS * 2 && dy <= BUBBLE_RADIUS * 2 && (dx > 0 || dy > 0);
+            return dx <= BUBBLE_DIAMETER && dy <= BUBBLE_DIAMETER && (dx > 0 || dy > 0);
         });
         neighbors.forEach(nb => dfs(nb, color));
     }
@@ -130,7 +139,6 @@ function checkMatches(bubble) {
         });
         score += matches.length * 10;
         scoreElement.textContent = `Score: ${score}`;
-        // Check for floating bubbles.
         checkFloating();
     }
 }
@@ -143,16 +151,14 @@ function checkFloating() {
         const neighbors = bubbles.filter(nb => {
             const dx = Math.abs(nb.x - b.x);
             const dy = Math.abs(nb.y - b.y);
-            return dx <= BUBBLE_RADIUS * 2 && dy <= BUBBLE_RADIUS * 2 && (dx > 0 || dy > 0);
+            return dx <= BUBBLE_DIAMETER && dy <= BUBBLE_DIAMETER && (dx > 0 || dy > 0);
         });
         neighbors.forEach(nb => {
             if (!visited.has(nb)) dfs(nb);
         });
     }
-    // Start from top row.
     const topBubbles = bubbles.filter(b => b.row === 0);
     topBubbles.forEach(b => dfs(b));
-    // Remove unvisited (floating).
     bubbles = bubbles.filter(b => visited.has(b));
 }
 

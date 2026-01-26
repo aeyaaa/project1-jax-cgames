@@ -20,11 +20,10 @@ h1 {
 }
 
 canvas {
-    width: 100vw;
-    max-width: 600px;  /* Limits max width for bubble grid. */
+    width: 70vw;  /* Full width, no max-width limit. */
     height: 70vh;
     border: 2px solid #333;
-    background-color: #000;  /* Black background. */
+    background-color: #000;
     display: block;
 }
 
@@ -34,7 +33,7 @@ canvas {
     z-index: 1;
     left: 0;
     top: 0;
-    width: 100%;
+    width: 0%;
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.4);
@@ -46,7 +45,7 @@ canvas {
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
-    max-width: 300px;
+    max-width: 100px;
     text-align: center;
     border-radius: 10px;
 }
