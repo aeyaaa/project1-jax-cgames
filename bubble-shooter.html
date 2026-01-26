@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bubble Shooter Game</title>
+    <link rel="stylesheet" href="bubble-shooter-styles.css">
+</head>
+<body>
+    <div>
+        <h1>Bubble Shooter</h1>
+        <p id="score">Score: 0</p>
+        <canvas id="gameCanvas"></canvas>
+        <p>Move mouse to aim, click to shoot. Match 3+ bubbles to pop!</p>
+    </div>
+    
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <p id="modalMessage">Game Over! Score: 0</p>
+            <button id="playAgainButton">Play Again</button>
+        </div>
+    </div>
+    
+    <script src="bubble-shooter-script.js"></script>
+</body>
+</html>
